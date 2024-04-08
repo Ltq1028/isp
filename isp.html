@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policy Decision Guide for Teenagers' Mental Health</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body, html {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #005f73;
+        }
+
+        button {
+            background-color: #008cba;
+            color: white;
+            padding: 10px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #005f73;
+        }
+
+        .question, .result, .intro, .conclusion {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="prompt-panel">
+            <h1>Improving Teenagers' Mental Health</h1>
+            <p>As a policymaker focused on the well-being of teenagers, you recognize the critical impact of the environment on mental health. With a limited budget but unlimited potential, your task is to select the most impactful environmental initiative. Your decision will pave the way for a healthier, more sustainable future for our youth.</p>
+        </div>
+        <div class="question-panel" id="content">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const content = document.getElementById('content');
+
+            const steps = {
+                1: {
+                    question: "Do you believe that addressing mental health issues through educational initiatives could be the most effective approach?",
+                    yes: 2,
+                    no: 6
+                },
+                2: {
+                    question: "Considering the potential benefits of educational initiatives, do you think there are other equally or more effective approaches?",
+                    yes: 4,
+                    no: 3
+                },
+                3: {
+                    question: "What aspects of environmental education do you find promising?",
+                    options: {
+                        "Incorporating lessons on the benefits of nature for mental well-being": "result1",
+                        "Teaching sustainable practices for both mental and environmental health": "result2"
+                    }
+                },
+                4: {
+                    question: "Which of the options below do you think would be the most effective approach?",
+                    options: {
+                        "Incorporating lessons on the benefits of nature for mental well-being for elementary school": "result1",
+                        "Incorporation of eco-therapies or sustainable practices such as urban planning": 5
+                    }
+                },
+                5: {
+                    question: "What alternative approach do you think could effectively address mental health issues?",
+                    options: {
+                        "Investing in integrating eco-therapies and ecopsychology principles into mental health services": "result3",
+                        "Mandating certain percentage of land within each district to provide greenery": "result2",
+                        "I changed my mind, education is the best": "result1"
+                    }
+                },
+                6: {
+                    question: "Do you think mandates to ensure the presence of green spaces in urban areas can be the most effective approach?",
+                    yes: "result2",
+                    no: 7
+                },
+                7: {
+                    question: "Do you believe that integrating eco-therapies and ecopsychology principles into mental health services could be the most beneficial?",
+                    yes: "result3",
+                    no: 8
+                },
+                8: {
+                    question: "If you were forced to choose among the three options, which option is the better choice?",
+                    options: {
+                        "Education": "result1",
+                        "More green space": "result2",
+                        "Eco-therapies": "result3"
+                    }
+                },
+                result1: {
+                    conclusion: "You've chosen <strong>Environmental Educational Mandates</strong> as the most promising approach. This initiative aims to incorporate environmental education into the curriculum, emphasizing the mental health benefits of nature and sustainable living. It's a forward-thinking choice that seeks to empower the next generation with the knowledge and values to lead healthier, more environmentally conscious lives."
+                },
+                result2: {
+                    conclusion: "You've selected <strong>Green Spaces and Urban Planning</strong> as the key initiative. This policy focuses on integrating more green spaces into urban areas, providing natural sanctuaries for mental well-being and community engagement. It's a tangible change that can transform the physical and psychological landscape of our cities."
+                },
+                result3: {
+                    conclusion: "Your choice is <strong>Mandated Integration of Ecopsychology and Eco-therapies</strong> into behavioral and mental health practices. This innovative approach recognizes the therapeutic potential of nature and seeks to harness it within mental health services. It's a pioneering step towards holistic health care that acknowledges the interconnectedness of environment and well-being."
+                }
+            };
+
+            function showStep(stepKey) {
+                const step = steps[stepKey];
+                content.innerHTML = ''; // Clear current content
+
+                if (typeof step.question !== 'undefined') { // If it's a question
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question';
+                    questionElement.innerHTML = `<p>${step.question}</p>`;
+                    content.appendChild(questionElement);
+
+                    if (step.options) { // Multiple choice question
+                        Object.entries(step.options).forEach(([text, nextStep]) => {
+                            const button = document.createElement('button');
+                            button.textContent = text;
+                            button.onclick = () => showStep(nextStep);
+                            content.appendChild(button);
+                        });
+                    } else { // Yes/No question
+                        const yesButton = document.createElement('button');
+                        yesButton.textContent = 'Yes';
+                        yesButton.onclick = () => showStep(step.yes);
+                        content.appendChild(yesButton);
+
+                        const noButton = document.createElement('button');
+                        noButton.textContent = 'No';
+                        noButton.onclick = () => showStep(step.no);
+                        content.appendChild(noButton);
+                    }
+                } else { // Final result
+                    const conclusionElement = document.createElement('div');
+                    conclusionElement.className = 'conclusion';
+                    conclusionElement.innerHTML = `<p>${step.conclusion}</p>`;
+                    content.appendChild(conclusionElement);
+                }
+            }
+
+            showStep(1); // Start with the first question
+        });
+    </script>
+</body>
+</html>
